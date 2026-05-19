@@ -1,0 +1,51 @@
+services:
+  rustdesk-server:
+    build:
+      context: ./rustdesk-server
+      dockerfile: Dockerfile
+    image: ${SERVER_IMAGE:-tanqt0728/rustdesk-selfhost-qt-server:latest}
+    container_name: rustdesk-server
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /root/data:/data
+      - rustdesk-db:/app/data
+    environment:
+      - TZ=${TZ:-Asia/Singapore}
+      - RELAY=${RUSTDESK_RELAY_PUBLIC:?set RUSTDESK_RELAY_PUBLIC in .env}
+      - ENCRYPTED_ONLY=${RUSTDESK_ENCRYPTED_ONLY:-0}
+      - MUST_LOGIN=Y
+      - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
+      # Prefer KEY_PUB/KEY_PRIV or existing /root/data/id_ed25519* files.
+      # The legacy KEY env from older run commands is not persisted here.
+
+  rustdesk-api:
+    build:
+      context: ./rustdesk-api
+      dockerfile: Dockerfile
+    image: ${API_IMAGE:-tanqt0728/rustdesk-selfhost-qt-api:latest}
+    container_name: rustdesk-api
+    restart: unless-stopped
+    ports:
+      - "21114:21114"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - rustdesk-api-data:/app/data
+      - rustdesk-api-conf:/app/conf
+      - /root/data:/server-data
+    environment:
+      - TZ=${TZ:-Asia/Singapore}
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_INTERNAL:-host.docker.internal:21116}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_INTERNAL:-host.docker.internal:21117}
+      - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_PUBLIC_URL:?set RUSTDESK_API_PUBLIC_URL in .env}
+      - RUSTDESK_API_RUSTDESK_KEY=${RUSTDESK_KEY:-}
+      - RUSTDESK_API_APP_WEB_CLIENT=1
+      - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
+      # Set to e.g. 0.0.0.0:21124 and publish 21124 only on VPN/localhost to split admin from public API.
+      - RUSTDESK_API_GIN_ADMIN_ADDR=${RUSTDESK_API_ADMIN_ADDR:-}
+
+volumes:
+  rustdesk-db:
+  rustdesk-api-data:
+  rustdesk-api-conf:

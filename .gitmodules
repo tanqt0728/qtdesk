@@ -1,0 +1,10 @@
+[submodule "rustdesk-api"]
+	path = rustdesk-api
+	url = https://github.com/tanqt0728/rustdesk-api.git
+	branch = master
+
+[submodule "rustdesk-server"]
+	path = rustdesk-server
+	url = https://github.com/tanqt0728/rustdesk-server.git
+	branch = forapi
+

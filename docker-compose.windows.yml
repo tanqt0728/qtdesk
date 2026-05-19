@@ -1,0 +1,41 @@
+# Windows/Docker Desktop friendly override.
+#
+# Usage:
+#   docker compose --env-file .env -f docker-compose.yml -f docker-compose.windows.yml up -d --build
+#
+# This avoids Linux host networking and publishes the RustDesk ports explicitly.
+services:
+  rustdesk-server:
+    network_mode: !reset null
+    ports:
+      - "21115:21115"
+      - "21116:21116"
+      - "21116:21116/udp"
+      - "21117:21117"
+      - "21118:21118"
+      - "21119:21119"
+    volumes:
+      - rustdesk-server-data:/data
+      - rustdesk-db:/app/data
+
+  rustdesk-api:
+    extra_hosts: []
+    # Keep the local dev stack all-in-one by default. To test split admin locally:
+    #   set RUSTDESK_API_ADMIN_ADDR=0.0.0.0:21124 in .env
+    #   uncomment the 21124 port mapping below or add an override file.
+    # ports:
+    #   - "21114:21114"
+    #   - "127.0.0.1:21124:21124"
+    volumes:
+      - rustdesk-api-data:/app/data
+      - rustdesk-api-conf:/app/conf
+      - rustdesk-server-data:/server-data
+    environment:
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_PUBLIC:-127.0.0.1:21116}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_PUBLIC:-127.0.0.1:21117}
+    depends_on:
+      - rustdesk-server
+
+volumes:
+  rustdesk-server-data:
+  rustdesk-api-conf:

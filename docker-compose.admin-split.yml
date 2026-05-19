@@ -1,0 +1,17 @@
+# Optional admin split override.
+#
+# Usage:
+#   docker compose --env-file .env -f docker-compose.yml -f docker-compose.windows.yml -f docker-compose.admin-split.yml up -d
+#
+# Result:
+#   Public API/Web v3: http://127.0.0.1:21114
+#   Private admin UI/API: http://127.0.0.1:21124/_admin/
+#
+# For a cloud server, keep 21124 bound to localhost/VPN only and publish 21114 normally.
+services:
+  rustdesk-api:
+    ports:
+      - "21114:21114"
+      - "${RUSTDESK_API_ADMIN_HOST_PORT:-127.0.0.1:21124}:21124"
+    environment:
+      - RUSTDESK_API_GIN_ADMIN_ADDR=${RUSTDESK_API_ADMIN_ADDR:-0.0.0.0:21124}
