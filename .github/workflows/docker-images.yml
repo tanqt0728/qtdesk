@@ -16,8 +16,6 @@ on:
 env:
   DOCKERHUB_SERVER_IMAGE: tanqt11/rustdesk-selfhost-qt-server
   DOCKERHUB_API_IMAGE: tanqt11/rustdesk-selfhost-qt-api
-  GHCR_SERVER_IMAGE: ghcr.io/${{ github.repository_owner }}/rustdesk-selfhost-qt-server
-  GHCR_API_IMAGE: ghcr.io/${{ github.repository_owner }}/rustdesk-selfhost-qt-api
 
 jobs:
   build:
@@ -27,7 +25,6 @@ jobs:
       DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
     permissions:
       contents: read
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,7 +43,6 @@ jobs:
         with:
           images: |
             name=${{ env.DOCKERHUB_SERVER_IMAGE }},enable=${{ env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != '' }}
-            name=${{ env.GHCR_SERVER_IMAGE }}
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -59,7 +55,6 @@ jobs:
         with:
           images: |
             name=${{ env.DOCKERHUB_API_IMAGE }},enable=${{ env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != '' }}
-            name=${{ env.GHCR_API_IMAGE }}
           tags: |
             type=ref,event=branch
             type=ref,event=tag
@@ -72,13 +67,6 @@ jobs:
         with:
           username: ${{ env.DOCKERHUB_USERNAME }}
           password: ${{ env.DOCKERHUB_TOKEN }}
-
-      - name: Login to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push rustdesk-server
         uses: docker/build-push-action@v6

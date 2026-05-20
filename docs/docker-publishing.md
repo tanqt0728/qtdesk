@@ -9,16 +9,16 @@ Workflow:
 .github/workflows/docker-images.yml
 ```
 
-## Default Registry
+## Registry
 
-GitHub Container Registry is enabled by default:
+The workflow publishes to Docker Hub:
 
 ```text
-ghcr.io/<github-owner>/rustdesk-selfhost-qt-server
-ghcr.io/<github-owner>/rustdesk-selfhost-qt-api
+tanqt11/rustdesk-selfhost-qt-server
+tanqt11/rustdesk-selfhost-qt-api
 ```
 
-The workflow publishes:
+It publishes:
 
 - `latest` on the default branch
 - branch tags
@@ -27,20 +27,13 @@ The workflow publishes:
 
 Pull requests build images without pushing them.
 
-## Optional Docker Hub
+## Docker Hub Secrets
 
-Docker Hub publishing is enabled only when both repository secrets are set:
+Docker Hub publishing requires both repository secrets:
 
 ```text
 DOCKERHUB_USERNAME
 DOCKERHUB_TOKEN
-```
-
-When those secrets exist, the same workflow also publishes:
-
-```text
-tanqt11/rustdesk-selfhost-qt-server
-tanqt11/rustdesk-selfhost-qt-api
 ```
 
 ## Compose Image Names
@@ -50,13 +43,6 @@ The compose defaults match the public image names:
 ```env
 SERVER_IMAGE=tanqt11/rustdesk-selfhost-qt-server:latest
 API_IMAGE=tanqt11/rustdesk-selfhost-qt-api:latest
-```
-
-For GHCR images:
-
-```env
-SERVER_IMAGE=ghcr.io/<github-owner>/rustdesk-selfhost-qt-server:latest
-API_IMAGE=ghcr.io/<github-owner>/rustdesk-selfhost-qt-api:latest
 ```
 
 ## Before Publishing

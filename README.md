@@ -79,8 +79,7 @@ For a cloud server, publish `21124` only to localhost, VPN, Tailscale/ZeroTier, 
 See `docs/production-deployment.md` for port exposure, SSH tunnel, Caddy, Nginx,
 and migration examples.
 
-See `docs/docker-publishing.md` for GitHub Actions image publishing to GHCR and
-optional Docker Hub.
+See `docs/docker-publishing.md` for GitHub Actions image publishing to Docker Hub.
 
 Rebuild only one side when needed:
 
