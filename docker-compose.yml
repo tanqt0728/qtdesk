@@ -40,6 +40,7 @@ services:
       - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_INTERNAL:-host.docker.internal:21117}
       - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_PUBLIC_URL:?set RUSTDESK_API_PUBLIC_URL in .env}
       - RUSTDESK_API_RUSTDESK_KEY=${RUSTDESK_KEY:-}
+      - RUSTDESK_API_RUSTDESK_KEY_FILE=/server-data/id_ed25519.pub
       - RUSTDESK_API_APP_WEB_CLIENT=1
       - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
       # Set to e.g. 0.0.0.0:21124 and publish 21124 only on VPN/localhost to split admin from public API.
