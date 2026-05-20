@@ -29,8 +29,8 @@ Current fork remotes in this workspace point to:
 
 Suggested image names:
 
-- `tanqt0728/rustdesk-selfhost-qt-server:latest`
-- `tanqt0728/rustdesk-selfhost-qt-api:latest`
+- `tanqt11/rustdesk-selfhost-qt-server:latest`
+- `tanqt11/rustdesk-selfhost-qt-api:latest`
 
 ## Deployment Model
 

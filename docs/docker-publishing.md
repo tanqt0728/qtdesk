@@ -39,8 +39,8 @@ DOCKERHUB_TOKEN
 When those secrets exist, the same workflow also publishes:
 
 ```text
-tanqt0728/rustdesk-selfhost-qt-server
-tanqt0728/rustdesk-selfhost-qt-api
+tanqt11/rustdesk-selfhost-qt-server
+tanqt11/rustdesk-selfhost-qt-api
 ```
 
 ## Compose Image Names
@@ -48,8 +48,8 @@ tanqt0728/rustdesk-selfhost-qt-api
 The compose defaults match the public image names:
 
 ```env
-SERVER_IMAGE=tanqt0728/rustdesk-selfhost-qt-server:latest
-API_IMAGE=tanqt0728/rustdesk-selfhost-qt-api:latest
+SERVER_IMAGE=tanqt11/rustdesk-selfhost-qt-server:latest
+API_IMAGE=tanqt11/rustdesk-selfhost-qt-api:latest
 ```
 
 For GHCR images:
