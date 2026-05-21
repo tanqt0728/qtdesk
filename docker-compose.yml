@@ -36,8 +36,8 @@ services:
       - /root/data:/server-data
     environment:
       - TZ=${TZ:-Asia/Singapore}
-      - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_INTERNAL:-host.docker.internal:21116}
-      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_INTERNAL:-host.docker.internal:21117}
+      - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_PUBLIC:-rustdesk.example.com:21116}
+      - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_PUBLIC:-rustdesk.example.com:21117}
       - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_PUBLIC_URL:?set RUSTDESK_API_PUBLIC_URL in .env}
       - RUSTDESK_API_RUSTDESK_KEY_FILE=/server-data/id_ed25519.pub
       - RUSTDESK_API_APP_WEB_CLIENT=1
