@@ -4,6 +4,8 @@ Enhanced self-host control plane, Web v3 experiments, backup/restore, and custom
 
 This is not the official RustDesk project. See `NOTICE.md`, `TRADEMARKS.md`, and `docs/derived-code-map.md`.
 
+See `CHANGELOG.md` for the current project log and `PROJECT_STATUS.md` for the handoff/status notes used during development.
+
 ## Upstream
 
 This repository keeps the original copyright and license notices in each
@@ -31,6 +33,13 @@ Suggested image names:
 
 - `tanqt11/rustdesk-selfhost-qt-server:latest`
 - `tanqt11/rustdesk-selfhost-qt-api:latest`
+
+Current verified self-host shape:
+
+- Public API/Web v3 on `21114`.
+- Private admin on `21124` through `docker-compose.admin-split.yml`.
+- Web v3 browser transport uses WebSocket ports `21118` and `21119`.
+- Native RustDesk clients use `21116` and `21117` plus the server public key.
 
 ## Deployment Model
 
@@ -75,6 +84,11 @@ RUSTDESK_API_ADMIN_HOST_PORT=127.0.0.1:21124
 ```
 
 For a cloud server, publish `21124` only to localhost, VPN, Tailscale/ZeroTier, SSH tunnel, or a reverse proxy with IP allowlisting and HTTPS.
+
+When opening Web v3 from a private admin entrypoint such as Tailscale, the
+browser must be able to reach the matching WebSocket ports on the same network.
+For example, a page opened from `http://100.x.x.x:21124/web3/` should connect
+to `ws://100.x.x.x:21118` and `ws://100.x.x.x:21119`.
 
 To let Admin restart the `rustdesk-server` container after generating or
 importing a server keypair, add the optional restart override:

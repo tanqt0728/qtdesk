@@ -36,6 +36,18 @@ Recommended public exposure:
 21124/tcp  Private only, never open to the whole internet
 ```
 
+Web v3 note:
+
+- Native RustDesk clients normally use `21116` and `21117`.
+- Browser Web v3 uses WebSocket ports `21118` and `21119`.
+- If you open Web v3 through a VPN/Tailscale admin address, the browser should
+  stay on that reachable entrypoint for both rendezvous and relay WebSockets.
+  Example: `http://100.x.x.x:21124/web3/` should connect to
+  `ws://100.x.x.x:21118` and `ws://100.x.x.x:21119`.
+- Do not put `21118` or `21119` into the legacy `custom-rendezvous-server` or
+  `custom-relay-server` localStorage values manually; that legacy protocol
+  stores native ports and adds `+2` internally.
+
 Run split mode:
 
 ```sh

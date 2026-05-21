@@ -1,6 +1,6 @@
 # QT-DESK Project Status
 
-Last updated: 2026-05-19
+Last updated: 2026-05-21
 
 Use this file as the handoff anchor for future prompts. At the start of a new session, ask Codex to read `PROJECT_STATUS.md` first, then continue from the open items.
 
@@ -22,21 +22,48 @@ Primary goals:
 
 ## Overall Progress
 
-Current practical completion estimate: 83%.
+Current practical completion estimate: 88%.
 
 Meaning:
 
 - Core RustDesk self-host compatibility: 90%.
-- Docker split deployment and admin/API split: 90%.
-- Backup, restore, and old-server migration: 85%.
-- Admin usability/polish: 74%.
-- Public GitHub readiness: 82%.
-- Production self-host docs: 82%.
-- Web v3 remote-control stability: 70%.
+- Docker split deployment and admin/API split: 92%.
+- Backup, restore, and old-server migration: 86%.
+- Admin usability/polish: 78%.
+- Public GitHub readiness: 88%.
+- Production self-host docs: 86%.
+- Web v3 remote-control stability: 78%.
 - Custom client builder/rebrand pipeline: 45%.
 - Clean-room QT Desk-native direction: 15%.
 
-The project is close to usable as a self-hosted RustDesk-compatible control plane, but not yet "finished" as a polished QT Desk product. Main remaining product risks are Web v3 video/DRM/tearing/disconnect behavior, custom client binary builds, and deeper admin UI polish.
+The project is usable for VPS/private self-host testing as a RustDesk-compatible control plane, but not yet "finished" as a polished QT Desk product. Main remaining product risks are Web v3 video/DRM/tearing behavior, custom client binary builds, and deeper admin UI polish.
+
+## Latest VPS/Web v3 Status
+
+Status: working on 2026-05-21.
+
+- GitHub root repo: `tanqt0728/qtdesk`.
+- Docker Hub images:
+  - `tanqt11/rustdesk-selfhost-qt-server:latest`
+  - `tanqt11/rustdesk-selfhost-qt-api:latest`
+- VPS private admin/Web v3 test target:
+  - Admin: `http://100.70.7.104:21124/_admin/`
+  - Web v3: `http://100.70.7.104:21124/web3/`
+- User confirmed Web v3 connection works after the relay-entrypoint fix.
+- Important Web v3 behavior:
+  - Native RustDesk clients use native ports `21116/21117`.
+  - Web v3 browser sessions use WebSocket ports `21118/21119`.
+  - The legacy web protocol stores native ports in `localStorage` and internally adds `+2` for WebSocket.
+  - Do not seed `21118/21119` directly into `custom-rendezvous-server` / `custom-relay-server`; that causes accidental `21120/21121`.
+- Current Web v3 build marker: `20260521-relay-entry1`.
+- Latest Web v3 connection fixes:
+  - browser-facing config now prefers the current request host for non-localhost Web v3 entrypoints;
+  - frontend now prefers `rendezvous_ws_server` / `relay_ws_server` when seeding protocol localStorage;
+  - relay WebSocket connections are rewritten to the selected Web v3 entrypoint, so a session opened through Tailscale does not get pulled back to a public DNS relay returned by hbbs.
+- Expected browser console in Tailscale admin mode:
+  - `Connecting to rendezvoous server: ws://100.70.7.104:21118`
+  - `Connecting to relay server: ws://100.70.7.104:21119`
+- If a browser still shows `20260519-input-layer1`, the VPS image or browser cache is stale.
 
 Current live Web v3 blocker:
 
