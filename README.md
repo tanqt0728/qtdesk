@@ -76,6 +76,20 @@ RUSTDESK_API_ADMIN_HOST_PORT=127.0.0.1:21124
 
 For a cloud server, publish `21124` only to localhost, VPN, Tailscale/ZeroTier, SSH tunnel, or a reverse proxy with IP allowlisting and HTTPS.
 
+To let Admin restart the `rustdesk-server` container after generating or
+importing a server keypair, add the optional restart override:
+
+```bash
+docker compose --env-file .env \
+  -f docker-compose.yml \
+  -f docker-compose.admin-split.yml \
+  -f docker-compose.admin-restart.yml \
+  up -d
+```
+
+Only enable this when the admin port is private, because it mounts the Docker
+socket into the API container.
+
 See `docs/production-deployment.md` for port exposure, SSH tunnel, Caddy, Nginx,
 and migration examples.
 

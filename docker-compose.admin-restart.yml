@@ -1,0 +1,16 @@
+# Optional: allow the Admin API to restart the rustdesk-server container.
+#
+# Usage:
+#   docker compose --env-file .env \
+#     -f docker-compose.yml \
+#     -f docker-compose.admin-split.yml \
+#     -f docker-compose.admin-restart.yml \
+#     up -d
+#
+# Security note:
+#   /var/run/docker.sock gives the API container control over Docker on the host.
+#   Only enable this when the admin port is private/VPN-only.
+services:
+  rustdesk-api:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
