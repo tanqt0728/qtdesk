@@ -17,6 +17,7 @@ rustdesk-api-v2/
 *.key
 id_ed25519
 id_ed25519.pub
+New Text Document.txt
 secrets/
 runtime/
 publish/

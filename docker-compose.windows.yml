@@ -31,6 +31,7 @@ services:
       - rustdesk-api-conf:/app/conf
       - rustdesk-server-data:/server-data
     environment:
+      - MUST_LOGIN=${RUSTDESK_MUST_LOGIN:-Y}
       - RUSTDESK_API_RUSTDESK_ID_SERVER=${RUSTDESK_ID_PUBLIC:-127.0.0.1:21116}
       - RUSTDESK_API_RUSTDESK_RELAY_SERVER=${RUSTDESK_RELAY_PUBLIC:-127.0.0.1:21117}
     depends_on:

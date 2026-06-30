@@ -14,7 +14,7 @@ services:
       - TZ=${TZ:-Asia/Singapore}
       - RELAY=${RUSTDESK_RELAY_PUBLIC:?set RUSTDESK_RELAY_PUBLIC in .env}
       - ENCRYPTED_ONLY=${RUSTDESK_ENCRYPTED_ONLY:-0}
-      - MUST_LOGIN=Y
+      - MUST_LOGIN=${RUSTDESK_MUST_LOGIN:-Y}
       - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
       # Prefer KEY_PUB/KEY_PRIV or existing /root/data/id_ed25519* files.
       # The legacy KEY env from older run commands is not persisted here.
@@ -41,7 +41,10 @@ services:
       - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_PUBLIC_URL:?set RUSTDESK_API_PUBLIC_URL in .env}
       - RUSTDESK_API_RUSTDESK_KEY_FILE=/server-data/id_ed25519.pub
       - RUSTDESK_API_APP_WEB_CLIENT=1
+      - RUSTDESK_API_APP_TOKEN_EXPIRE=${RUSTDESK_API_APP_TOKEN_EXPIRE:-168h}
       - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
+      - RUSTDESK_API_JWT_EXPIRE_DURATION=${RUSTDESK_API_JWT_EXPIRE_DURATION:-168h}
+      - MUST_LOGIN=${RUSTDESK_MUST_LOGIN:-Y}
       # Set to e.g. 0.0.0.0:21124 and publish 21124 only on VPN/localhost to split admin from public API.
       - RUSTDESK_API_GIN_ADMIN_ADDR=${RUSTDESK_API_ADMIN_ADDR:-}
 
