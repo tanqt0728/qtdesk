@@ -13,7 +13,7 @@ services:
     environment:
       - TZ=${TZ:-Asia/Singapore}
       - RELAY=${RUSTDESK_RELAY_PUBLIC:?set RUSTDESK_RELAY_PUBLIC in .env}
-      - ENCRYPTED_ONLY=${RUSTDESK_ENCRYPTED_ONLY:-0}
+      - ENCRYPTED_ONLY=${RUSTDESK_ENCRYPTED_ONLY:-1}
       - MUST_LOGIN=${RUSTDESK_MUST_LOGIN:-Y}
       - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
       # Prefer KEY_PUB/KEY_PRIV or existing /root/data/id_ed25519* files.
@@ -41,9 +41,15 @@ services:
       - RUSTDESK_API_RUSTDESK_API_SERVER=${RUSTDESK_API_PUBLIC_URL:?set RUSTDESK_API_PUBLIC_URL in .env}
       - RUSTDESK_API_RUSTDESK_KEY_FILE=/server-data/id_ed25519.pub
       - RUSTDESK_API_APP_WEB_CLIENT=1
-      - RUSTDESK_API_APP_TOKEN_EXPIRE=${RUSTDESK_API_APP_TOKEN_EXPIRE:-168h}
+      # Sliding DB session: refreshed on every authenticated client call, revocable in admin.
+      - RUSTDESK_API_APP_TOKEN_EXPIRE=${RUSTDESK_API_APP_TOKEN_EXPIRE:-2160h}
       - RUSTDESK_API_JWT_KEY=${RUSTDESK_API_JWT_KEY:?set RUSTDESK_API_JWT_KEY in .env}
-      - RUSTDESK_API_JWT_EXPIRE_DURATION=${RUSTDESK_API_JWT_EXPIRE_DURATION:-168h}
+      # Hard cap of the client JWT (never re-issued; stock clients have no refresh). Keep it long.
+      - RUSTDESK_API_JWT_EXPIRE_DURATION=${RUSTDESK_API_JWT_EXPIRE_DURATION:-8760h}
+      # Ban an IP for 30 min after this many failed logins in 10 min (0 disables).
+      - RUSTDESK_API_APP_BAN_THRESHOLD=${RUSTDESK_API_APP_BAN_THRESHOLD:-10}
+      # Reverse proxy address(es) whose X-Forwarded-For is trusted. Empty = trust none.
+      - RUSTDESK_API_GIN_TRUST_PROXY=${RUSTDESK_API_GIN_TRUST_PROXY:-}
       - MUST_LOGIN=${RUSTDESK_MUST_LOGIN:-Y}
       # Set to e.g. 0.0.0.0:21124 and publish 21124 only on VPN/localhost to split admin from public API.
       - RUSTDESK_API_GIN_ADMIN_ADDR=${RUSTDESK_API_ADMIN_ADDR:-}
